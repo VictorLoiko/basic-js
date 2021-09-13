@@ -23,7 +23,65 @@ import { NotImplementedError } from '../extensions/index.js';
  *  [1, 1, 1]
  * ]
  */
-export default function minesweeper (/* matrix */) {
-  throw new NotImplementedError('Not implemented');
-  // remove line with error and write your code here
+
+const init2DArray = matrix => {
+  let array = new Array(matrix.length);
+  for (let i=0; i<matrix.length; i++) {
+    if(matrix[i]){
+      array[i] = new Array(matrix[i].length);
+    }
+  }
+  for(let i=0; i<matrix.length; i++) 
+    for (let j=0; j<matrix[i].length; j++)
+      array[i][j]=0;
+  return array;
+}
+
+export default function minesweeper (matrix) {
+  let output=init2DArray(matrix);
+  for(let i=0; i<matrix.length; i++) {
+    for (let j=0; j<matrix.length; j++) {
+      if(matrix[i][j]) {
+        output[i][j]=1;
+  
+        if(typeof matrix[i-1]!=='undefined') {
+          if(typeof matrix[i-1][j-1]!=='undefined') {
+            output[i-1][j-1] = !matrix[i-1][j-1] ? output[i-1][j-1]+1 : 1;
+          }
+          if(typeof matrix[i-1][j]!=='undefined') {
+            output[i-1][j] = !matrix[i-1][j] ? output[i-1][j]+1 : 1;
+          }
+          if(typeof matrix[i-1][j+1]!=='undefined')  {
+            output[i-1][j+1] = !matrix[i-1][j+1] ? output[i-1][j+1]+1 : 1;
+          }
+        }
+
+        if(typeof matrix[i]!=='undefined') {
+          if(typeof matrix[i][j+1]!=='undefined') {
+            output[i][j+1] = !matrix[i][j+1] ? output[i][j+1]+1 : 1;
+          }
+
+          if(typeof matrix[i][j-1]!=='undefined') {
+            output[i][j-1] = !matrix[i][j-1] ? output[i][j-1]+1 : 1;
+          }
+
+        }
+
+        if(typeof matrix[i+1]!=='undefined') {
+          if(typeof matrix[i+1][j+1]!=='undefined') {
+            output[i+1][j+1] = !matrix[i+1][j+1] ? output[i+1][j+1]+=1 : 1;
+          }
+          if(typeof matrix[i+1][j]!=='undefined') {
+            output[i+1][j] = !matrix[i+1][j] ? output[i+1][j]+1 : 1;
+          }
+          if(typeof matrix[i+1][j-1]!=='undefined') {
+            output[i+1][j-1] = !matrix[i+1][j-1] ? output[i+1][j-1]+1 : 1;
+          }
+        }
+      }
+    }
+  }
+    
+
+  return output;
 }
